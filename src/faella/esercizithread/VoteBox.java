@@ -8,7 +8,6 @@ public class VoteBox extends Thread {
 
     private int votanti;
     private int votiRicevuti;
-    private boolean done;
     private boolean result;
     private Map<Thread, Boolean> votes = new HashMap<>();
 
@@ -35,7 +34,6 @@ public class VoteBox extends Thread {
                 }
             }
             result = falseAcc < trueAcc;
-            done = true;
             // remove this
             for (Thread t : votes.keySet()) {
                 System.out.println(t + "voto ricevuto: " + votes.get(t));
@@ -47,9 +45,9 @@ public class VoteBox extends Thread {
     }
 
     public void vote(boolean value) {
-        if (!done) {
+        if (votiRicevuti < votanti) {
             synchronized (votes) {
-                if (!done) {
+                if (votiRicevuti < votanti) {
                     if (!votes.containsKey(currentThread())) {
                         votes.put(currentThread(), value);
                         votiRicevuti++;
@@ -64,7 +62,7 @@ public class VoteBox extends Thread {
 
     public boolean waitForResult() throws InterruptedException {
         synchronized (votes) {
-            while (!done) {
+            while (votiRicevuti < votanti) {
                 votes.wait();
             }
             return result;
@@ -73,7 +71,7 @@ public class VoteBox extends Thread {
 
     public boolean isDone() {
         synchronized (votes) {
-            return done;
+            return votiRicevuti < votanti;
         }
     }
 
