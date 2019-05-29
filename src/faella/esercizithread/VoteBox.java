@@ -71,7 +71,7 @@ public class VoteBox extends Thread {
 
     public boolean isDone() {
         synchronized (votes) {
-            return votiRicevuti < votanti;
+            return votiRicevuti >= votanti;
         }
     }
 
