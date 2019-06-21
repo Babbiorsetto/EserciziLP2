@@ -61,4 +61,46 @@ public class MetodiStatici {
         }
         */
     }
+
+    public static void atLeastOne(int n, Runnable r) {
+
+        Thread[] threads = new Thread[n];
+
+        class MyThread extends Thread {
+
+            Runnable r;
+
+            MyThread(Runnable r) {
+                this.r = r;
+            }
+
+            @Override
+            public void run() {
+                r.run();
+                for (Thread t : threads) {
+                    t.interrupt();
+                }
+            }
+        }
+
+        for (int i = 0; i < threads.length; i++) {
+            threads[i] = new MyThread(r);
+            threads[i].start();
+        }
+
+        /*
+        public static void main(String[] args) {
+
+		atLeastOne(15, () -> {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                System.out.println("Over");
+            });
+	   }
+       */
+    }
+
 }
