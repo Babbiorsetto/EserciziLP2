@@ -103,4 +103,72 @@ public class MetodiStatici {
        */
     }
 
+    public static boolean findString(String[] a, String x) throws InterruptedException {
+
+        final boolean[] result = new boolean[1];
+        final Boolean[] checkThis = new Boolean[a.length];
+        final Thread[] threads = new Thread[2];
+
+        class MySlowThread extends Thread {
+            @Override
+            public void run() {
+                for (int i = 0; i < a.length; i++) {
+                    if (this.isInterrupted()) {
+                        break;
+                    }
+                    synchronized(a[i]) {
+                        if (checkThis[i] == null || checkThis[i] == true) {
+                            if (a[i].equals(x)) {
+                                result[0] = true;
+                                threads[1].interrupt();
+                                break;
+                            } else {
+                                checkThis[i] = false;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        class MyFastThread extends Thread {
+            @Override
+            public void run() {
+                boolean doneNothing = true;
+                for (int i = 0; i < a.length; i++) {
+                    if (this.isInterrupted()) {
+                        break;
+                    }
+                    synchronized(a[i]) {
+                        if (checkThis[i] == null) {
+                            if (a[i].length() == x.length()) {
+                                checkThis[i] = true;
+                                if (doneNothing) {
+                                    doneNothing = false;
+                                }
+                            } else {
+                                checkThis[i] = false;
+                            }
+                        }
+                    }
+                }
+                if (doneNothing) {
+                    threads[0].interrupt();
+                }
+            }
+        }
+
+        final Thread slowThread = new MySlowThread();
+        final Thread fastThread = new MyFastThread();
+        threads[0] = slowThread;
+        threads[1] = fastThread;
+        slowThread.start();
+        fastThread.start();
+        slowThread.join();
+        fastThread.join();
+
+        return result[0];
+    }
+
 }

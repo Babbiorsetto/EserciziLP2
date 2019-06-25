@@ -80,4 +80,46 @@ public class MetodiStatici {
         return null;
     }
 
+    public static boolean arePermutations(List<?> a, List<?> b) {
+
+        if (a.size() != b.size()) {
+            return false;
+        }
+
+        List<Object> first = new ArrayList<>(), second = new ArrayList<>();
+
+        for (int i = 0; i < a.size(); i++) {
+            first.add(a.get(i));
+            second.add(b.get(i));
+        }
+
+        boolean removed;
+        Object o1;
+        Object o2;
+        Iterator<Object> iter1 = first.iterator();
+        Iterator<Object> iter2;
+        while (iter1.hasNext()) {
+
+            o1 = iter1.next();
+            iter2 = second.iterator();
+            removed = false;
+
+            while (iter2.hasNext()) {
+
+                o2 = iter2.next();
+
+                if (o1.equals(o2)) {
+                    iter2.remove();
+                    iter1.remove();
+                    removed = true;
+                    break;
+                }
+            }
+            if (!removed) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
