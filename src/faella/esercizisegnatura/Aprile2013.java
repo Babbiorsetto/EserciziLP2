@@ -11,7 +11,7 @@ class C extends B {
     public String f(B x, A y){return"C1 + "+ f(this,b);}
     public String f(A x, Object y){return"C2";}
 }
-public class Aprile2016 {
+public class Aprile2013 {
     public static void main(String[] args){
         C gamma = new C();
         B beta = gamma;

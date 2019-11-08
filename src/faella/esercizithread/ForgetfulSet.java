@@ -33,7 +33,7 @@ public class ForgetfulSet<T> {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ForgetfulSet <String> s = new ForgetfulSet<String>(1000);
         s.add("uno");
         s.add("due");

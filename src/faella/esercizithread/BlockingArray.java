@@ -1,3 +1,8 @@
+package faella.esercizithread;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class BlockingArray<T> {
 
     private List<T> array;

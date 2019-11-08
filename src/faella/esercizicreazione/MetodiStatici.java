@@ -3,6 +3,7 @@ package faella.esercizicreazione;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class MetodiStatici {
